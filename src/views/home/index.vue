@@ -1,5 +1,4 @@
 <template>
-  <user-layout>
     <b-row class="h-100">
       <b-colxx xxs="12" md="10" class="mx-auto my-auto">
         <b-card class="auth-card" no-body>
@@ -63,7 +62,6 @@
         </b-card>
       </b-colxx>
     </b-row>
-  </user-layout>
 </template>
 
 <script>
@@ -74,23 +72,20 @@ import {
 import {
   validationMixin
 } from "vuelidate";
-
+import { adminRoot } from '../../constants/config';
 const {
   required,
   maxLength,
   minLength,
   email
 } = require("vuelidate/lib/validators");
-import {adminRoot} from '../../constants/config';
-import UserLayout from "@/layouts/UserLayout";
 
 export default {
-  components: {UserLayout},
   data() {
     return {
       form: {
-        email: "test@coloredstrategies.com",
-        password: "xxxxxx"
+        email: "",
+        password: ""
       },
     };
   },
@@ -99,7 +94,7 @@ export default {
     form: {
       password: {
         required,
-        maxLength: maxLength(16),
+        maxLength: maxLength(30),
         minLength: minLength(4)
       },
       email: {
@@ -116,21 +111,22 @@ export default {
     ...mapActions(["login"]),
     formSubmit() {
       this.$v.$touch();
-      this.form.email = "piaf-vue@coloredstrategies.com";
-      this.form.password = "piaf123";
       this.$v.form.$touch();
-      // if (!this.$v.form.$anyError) {
-      this.login({
-        email: this.form.email,
-        password: this.form.password
-      });
-      //}
+      if (!this.$v.form.$anyError) {
+        this.login({
+          email: this.form.email,
+          password: this.form.password
+        });
+      }
     }
   },
   watch: {
     currentUser(val) {
-      if (val && val.uid && val.uid.length > 0) {
+      console.log('watch current user',val)
+      debugger;
+      if (val && val.id) {
         setTimeout(() => {
+          console.log('pushing the admin root')
           this.$router.push(adminRoot);
         }, 200);
       }
