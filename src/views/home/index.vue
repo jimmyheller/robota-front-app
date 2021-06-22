@@ -122,8 +122,6 @@ export default {
   },
   watch: {
     currentUser(val) {
-      console.log('watch current user',val)
-      debugger;
       if (val && val.id) {
         setTimeout(() => {
           console.log('pushing the admin root')

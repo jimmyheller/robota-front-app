@@ -73,6 +73,7 @@ export default {
                     title: data.username,
                     img: '/assets/img/profiles/l-1.jpg',
                     date: 'Last seen today 15:24',
+                    token: data.token,
                     role: UserRole.Admin
                 }
                 setCurrentUser(loggedInUser)
@@ -85,23 +86,6 @@ export default {
                     commit('clearError')
                 }, 3000)
             });
-            // firebase
-            //   .auth()
-            //   .signInWithEmailAndPassword(payload.email, payload.password)
-            //   .then(
-            //     user => {
-            //       const item = { uid: user.user.uid, ...currentUser }
-            //       setCurrentUser(item)
-            //       commit('setUser', item)
-            //     },
-            //     err => {
-            //       setCurrentUser(null);
-            //       commit('setError', err.message)
-            //       setTimeout(() => {
-            //         commit('clearError')
-            //       }, 3000)
-            //     }
-            //   )
         },
         forgotPassword({commit}, payload) {
             commit('clearError')
@@ -144,14 +128,9 @@ export default {
 
 
         signOut({commit}) {
-            firebase
-                .auth()
-                .signOut()
-                .then(() => {
-                    setCurrentUser(null);
-                    commit('setLogout')
-                }, _error => {
-                })
+            setCurrentUser(null);
+            commit('setLogout')
         }
+
     }
 }
